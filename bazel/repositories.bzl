@@ -158,7 +158,7 @@ def envoy_dependencies(skip_targets = []):
     _com_github_unicode_org_icu()
     _com_github_intel_ipp_crypto_crypto_mb()
     _numactl()
-    _com_github_huawei_uadk()
+    _uadk()
     _com_github_intel_qatlib()
     _com_github_intel_qatzip()
     _com_github_qat_zstd()
@@ -389,9 +389,9 @@ def _numactl():
         build_file = "@envoy//bazel/external:numactl.BUILD",
     )
 
-def _com_github_huawei_uadk():
+def _uadk():
     external_http_archive(
-        name = "com_github_huawei_uadk",
+        name = "uadk",
         patches = ["@envoy//bazel/foreign_cc:uadk.patch"],
         patch_args = ["-p1"],
         build_file_content = BUILD_ALL_CONTENT,
