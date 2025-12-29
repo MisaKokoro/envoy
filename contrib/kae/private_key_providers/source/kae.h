@@ -38,7 +38,7 @@ const int KAE_BUFFER_SIZE = 1024;
 class KaeHandle : public Logger::Loggable<Logger::Id::connection> {
 public:
   KaeHandle() = default;
-  ~KaeHandle() override;
+  ~KaeHandle();
 
   void setLibUadk(LibUadkCryptoSharedPtr libuadk);
   LibUadkCryptoSharedPtr getLibuadk();

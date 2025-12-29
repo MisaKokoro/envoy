@@ -14,6 +14,7 @@
 
 #include "contrib/kae/private_key_providers/source/kae.h"
 #include "openssl/ssl.h"
+#include "absl/cleanup/cleanup.h"
 
 namespace Envoy {
 namespace Extensions {
@@ -109,12 +110,12 @@ ssl_private_key_result_t privateKeySignInternal(SSL* ssl, KaePrivateKeyConnectio
   }
 
   // The fd will become readable when the KAE operation has been completed.
-  ops->registerCallback(kae_ctx);
+  ops->registerCallback(kae_ctx.get());
 
   if (ssl) {
     // Associate the SSL instance with the KAE Context. The SSL instance might be nullptr if this is
     // called from a test context.
-    if (!SSL_set_ex_data(ssl, KaeManager::contextIndex(), kae_ctx)) {
+    if (!SSL_set_ex_data(ssl, KaeManager::contextIndex(), kae_ctx.get())) {
       return ssl_private_key_failure;
     }
   }
