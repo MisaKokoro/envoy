@@ -9,12 +9,11 @@
 #include "envoy/registry/registry.h"
 #include "envoy/server/transport_socket_config.h"
 
-#include "kae.h"
 #include "source/common/config/datasource.h"
 
+#include "absl/cleanup/cleanup.h"
 #include "contrib/kae/private_key_providers/source/kae.h"
 #include "openssl/ssl.h"
-#include "absl/cleanup/cleanup.h"
 
 namespace Envoy {
 namespace Extensions {
@@ -123,7 +122,7 @@ ssl_private_key_result_t privateKeySignInternal(SSL* ssl, KaePrivateKeyConnectio
   // Calculate the digest for signing.
   if (!EVP_DigestInit_ex(ctx.get(), md, nullptr) || !EVP_DigestUpdate(ctx.get(), in, in_len) ||
       !EVP_DigestFinal_ex(ctx.get(), hash, &hash_len)) {
-        return ssl_private_key_failure;
+    return ssl_private_key_failure;
   }
 
   // Add RSA padding to the the hash. Supported types are PSS and PKCS1.
